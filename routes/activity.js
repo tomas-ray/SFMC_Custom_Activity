@@ -9,6 +9,7 @@ let axios = require("axios");
 var request = require("request");
 var jsforce = require('jsforce');
 const jsonCircular = require('circular-json');
+const fs = require('fs');
 var campaignIdValue = '';
 var connectionErrorMessage = [];
 
@@ -37,6 +38,15 @@ function logData(req) {
     });
 }
 
+function writeToFile(output){
+    fs.writeFile("/home/appuser/logs/js.log", output, function(err) {
+       if(err) {
+           return console.log(err);
+       }
+        console.log("The file was saved!");
+   });  
+}
+
 /*
  * POST Handler for / route of Activity (this is the edit route).
  */
@@ -49,6 +59,7 @@ exports.edit = function (req, res) {
  * POST Handler for /save/ route of Activity.
  */
 exports.save = function (req, res) {
+    writeToFile('journeybuilder/save');
     console.log('Save');
     res.send(200, 'Save');
 };
@@ -57,7 +68,7 @@ exports.save = function (req, res) {
  * POST Handler for /publish/ route of Activity.
  */
 exports.publish = function (req, res) {
-    logData(req);
+    writeToFile('journeybuilder/publish');
     console.log('Publish');
     res.send(200, 'Publish');
 };
@@ -66,8 +77,7 @@ exports.publish = function (req, res) {
  * POST Handler for /validate/ route of Activity.
  */
 exports.validate = function (req, res) {
-    logData(req);
-    console.log('Validate');
+    writeToFile('journeybuilder/validate');
     res.send(200, 'Validate');
     console.log("end validate function!!!");
 };
@@ -76,8 +86,7 @@ exports.validate = function (req, res) {
  * POST Handler for /Stop/ route of Activity.
  */
 exports.stop = function (req, res) {
-    console.log('Stop');
-    logData(req);
+    writeToFile('journeybuilder/stop');
     res.send(200, 'Stop');
 };
 
@@ -101,6 +110,7 @@ exports.execute = function (req, res) {
             return res.send(200, 'Execute');
         
         } else {
+            writeToFile('inArguments invalid.');
             console.error('inArguments invalid.');
             return res.status(400).end();
         }
@@ -128,7 +138,6 @@ function getMcTokenJD(decodedArgs){
     };
 
     request(optionRequest, function (error, response, body) {
-        console.log('body ->' + body);
         var jsonObject = JSON.parse(body);
         var token = jsonObject["access_token"];
         getDataXMLJD(decodedArgs,token);
@@ -159,7 +168,6 @@ function getDataXMLJD(decodedArgs,token){
 
  
     const url = process.env.soap_Base_Uri + 'Service.asmx';
-    console.log('URL - > ' + url);
     const headers = {
     'Content-Type': 'text/xml',
     'soapAction': 'Retrieve'
@@ -173,6 +181,7 @@ function getDataXMLJD(decodedArgs,token){
     }
     ).then(response => {
         const { body, statusCode } = response.data;
+        writeToFile('RESPONSE - > ' + response.data);
         console.log('RESPONSE - > ' + response.data);
         var parser = require('fast-xml-parser');
         var he = require('he');
@@ -211,6 +220,7 @@ function getDataXMLJD(decodedArgs,token){
 
             }
             else{
+                writeToFile('Parser not validated');
                 console.log('PARSER NOT VALIDATE');
             }
     }
@@ -238,6 +248,7 @@ function requestGetProductInformationJD(isOnGoing,decodedArgs,token){
         }
     });
 
+    writeToFile('bodyStringRequest - > ' + bodyStringRequest);
     console.log('bodyStringRequest - > ' + bodyStringRequest);
 
     var header = {
@@ -254,11 +265,13 @@ function requestGetProductInformationJD(isOnGoing,decodedArgs,token){
     request(optionRequest, function (error, response, body) {
         if(error){
             connectionErrorMessage[0] = error;
-            console.log('connectionErrorMessage[2] - > ' + error);
+            writeToFile('connectionErrorMessage - > ' + error)
+            console.log('connectionErrorMessage - > ' + error);
         }
         else if(body){
             var jsonValue = JSON.parse(body);
             if(jsonValue.status == 'PS_FAILED'){
+                writeToFile('connectionErrorMessage - > ' + error);
                 console.log('connectionErrorMessage - > ' + error);
                 connectionErrorMessage[0] = jsonValue.status + '-' + jsonValue.message;
             }
@@ -268,7 +281,6 @@ function requestGetProductInformationJD(isOnGoing,decodedArgs,token){
     }).write(bodyStringRequest);
 }
 function updateDataExtensionDE(body,token,decodedArgs){
-    console.log('UPDATE DATA EXTENSION DE - >');
     let newProduct1 = '';
     let newProduct2 = '';
     let newProduct1Code = '';
@@ -308,16 +320,17 @@ function updateDataExtensionDE(body,token,decodedArgs){
 
 
     if(connectionErrorMessage.length > 0){
-        console.log('HERE ->');
         statusValue = process.env.ERROR;
         for(var i = 0; i < connectionErrorMessage.length; i++){
             if(connectionErrorMessage[i] !== undefined){
                 messageValue = connectionErrorMessage[i];
             }
+            writeToFile('MESSAGE VALUE - > ' + messageValue);
             console.log('MESSAGE VALUE - > ' + messageValue);
         }
     }
     else if(connectionErrorMessage.length === 0){
+        writeToFile('WS API BODY - > ' + body);
         console.log('WS API BODY - > ' + body);
         var jsonValue = JSON.parse(body);
         
@@ -347,24 +360,14 @@ function updateDataExtensionDE(body,token,decodedArgs){
         existingProductsKOsValue = jsonValue.koReason.existingProductsKOs
         salesPersonKOsValue = jsonValue.koReason.salesPersonKOs
 
-
-
-        console.log('ConnectionErrorMessage length - >' +connectionErrorMessage.length);
-        console.log('koStatus - > ' + koStatusValue);
-        console.log('jsonKoStatus - > ' + jsonValue.koStatus);
-        console.log('jsonValue.offerProducts - > ' + jsonValue.offerProducts.length);
-
         if(jsonValue.offerProducts.length === 0 && jsonValue.koStatus == process.env.KO_STATUS_NO){
-            console.log('1ST -> ');
             koStatusValue = process.env.KO_STATUS_YES;
         }
         else if(jsonValue.koStatus == process.env.KO_STATUS_YES && jsonValue.offerProducts.length !== 0){
-            console.log('2ND -> ');
             koStatusValue = process.env.KO_STATUS_NO;
         }
     
         if(koStatusValue == process.env.KO_STATUS_NO && jsonValue.offerProducts.length !== 0){
-            console.log('3RD - > ');
             var offerProductsSorted = jsonValue.offerProducts.slice(0);
             offerProductsSorted.sort(function(a,b) {
                 return a.productRank - b.productRank;
@@ -383,8 +386,6 @@ function updateDataExtensionDE(body,token,decodedArgs){
             }
         }
     }
-
-    console.log('koStatusValue - > ' + koStatusValue);
 
     var bodyStringInsertRowDE = JSON.stringify([
             {
@@ -432,7 +433,7 @@ function updateDataExtensionDE(body,token,decodedArgs){
             }
         }
     ]);
-
+    writeToFile('bodyStringInsertRowDE -> ' + bodyStringInsertRowDE);
     console.log('bodyStringInsertRowDE -> ' + bodyStringInsertRowDE);
     
     var headerInsertDE = {
@@ -446,7 +447,8 @@ function updateDataExtensionDE(body,token,decodedArgs){
     };
 
     request(optionRequestInsertDE, function (error, response, body) {
-        console.log('BODY - > ' + body);
+        writeToFile('INSERTED ROW IN DE' + body);
+        console.log('INSERTED ROW IN DE' + body);
     }).write(bodyStringInsertRowDE);
 }
 
