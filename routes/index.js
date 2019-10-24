@@ -10,9 +10,7 @@ var app = express();
  * GET home page.
  */
 exports.init = function(req, res) {
-	var date = new Date();
-	var timestamp = date.getTime();
-	console.log('RES - > ' + res);
+
 	console.log('INIT - >' + timestamp);
 	res.sendFile(path.resolve(__dirname,'../nba/index.html'));
 };
