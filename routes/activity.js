@@ -39,7 +39,7 @@ function logData(req) {
 }
 
 function writeToFile(output){
-    fs.writeFile("/home/appuser/logs/js.log", output, function(err) {
+    fs.writeFile("./home/appuser/logs/jsLog.txt", output, function(err) {
        if(err) {
            return console.log(err);
        }
