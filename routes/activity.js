@@ -48,7 +48,7 @@ function writeToFile(output){
            return console.log(err);
        }
        else{
-           console.log('jslogs updated');
+           console.log('jslogs updated ');
        }
    });  
 }
