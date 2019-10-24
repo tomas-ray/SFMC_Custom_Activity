@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+
+<head>
+    <title>JOURNEY BUILDER APP TEMPLATE</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie-edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8 ;">
+
+    <!-- Import the Design System style sheet -->
+
+    <script type="application/javascript" src="js/jquery-3.4.1.min.js"></script>
+    
+    <script type="application/javascript" src="js/require.js"></script>
+    <script type="application/javascript" src="js/postmonger.js"></script>
+    <script type="text/javascript">
+        
+        (function() {
+            var config = {
+                baseUrl: 'js'
+            };
+            var dependencies = [
+                'customActivity'
+            ];
+            require(config, dependencies);
+        })();
+    </script>
+</head>
+<style>
+    html{
+        background: white !important; }
+    h3.modal-title{
+        font-size : 1.25rem !important;
+        color : black !important;
+        line-height: 1.25 !important;
+        font-weight: 500 !important;
+    }
+</style>
+
+<body>
+    <div class="slds-scope">
+        <div class="myapp">
+            <div class="container">
+                <div class="row margin-top--10">
+                    <div class="col-md-3">
+                        <h5 style="font-size: 1.25rem; line-height : 1.25; color : black; padding-left : 30px;padding-top : 20px; padding-bottom : 20px">Product List Call</h5>
+                    </div>
+                </div>
+                <div class="row margin-top--20">
+                    <div class="col-md-4 offset-md-4 text-center">
+                        <h6 style = "color:black; padding-left: 30px">Lets Get Started!</h6>
+                        <p style ="color:black; padding-left: 30px; padding-bottom : 20px">Type your Journey Step!</p>
+                    </div>
+                </div>
+                <div class="row margin-top--40">
+                    <div class="form-group col-md-12">
+                        <label for="journeyStep" style="font-size: 1.25rem; line-height : 1.25; color : black; padding-left : 30px;padding-top : 30px">Journey Step</label>
+                        <input type="text" class="form-control" id="journeyStep"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

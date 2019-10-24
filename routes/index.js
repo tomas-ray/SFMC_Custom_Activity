@@ -10,7 +10,7 @@ var app = express();
  * GET home page.
  */
 exports.init = function(req, res) {
-	console.log('INIT - > ' + init);
+	console.log('INIT - > ');
 	res.sendFile(path.resolve(__dirname,'../nba/index.html'));
 };
 

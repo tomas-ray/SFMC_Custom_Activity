@@ -1,0 +1,80 @@
+{
+    "workflowApiVersion": "1.1",
+    "metaData": {
+        "icon": "images/icon.png",
+        "iconSmall": "images/icon.PNG",
+        "category": "custom",
+        "version": "2.0"
+    },
+
+    "type": "Rest",
+    "lang": {
+        "en-US": {
+            "name": "MC-NBA",
+            "description": "Testing of sending request"
+        }
+
+    },
+
+    "arguments": {
+        "execute": {
+            "inArguments": [{
+                "decisionId" : "",
+                "journeyStepCode" : "",
+                "campaignId" : "",
+                "campaignName" : "",
+                "clientId" : "",
+                "microSegment" : "",
+                "campaignType" : "",
+                "campaignProductType" : "",
+                "contactId" : "",
+                "override" : "",
+                "accountId" : ""
+            }],
+            "outArguments": [], 
+            "url": "https://mock-nba-sit.azurewebsites.net/nba/journeybuilder/execute",
+            "verb": "POST",
+            "body": "", 
+            "header": "", 
+            "format": "json",
+            "useJwt": true,
+            "timeout": 10000
+        }
+    },
+
+    "configurationArguments": {
+        "applicationExtensionKey": "",
+        "save": {
+            "url": "https://mock-nba-sit.azurewebsites.net/nba/journeybuilder/save",
+            "body": "", 
+            "verb": "POST",
+            "useJwt": true
+        },
+        "publish": {
+            "url": "https://mock-nba-sit.azurewebsites.net/nba/journeybuilder/publish",
+            "verb": "POST",
+            "body": "", 
+            "useJwt": true
+        },
+        "validate": {
+            "url": "https://mock-nba-sit.azurewebsites.net/nba/journeybuilder/validate",
+            "verb": "POST",
+            "body": "", 
+            "useJwt": true
+        },
+        "stop" : {
+            "url" : "https://mock-nba-sit.azurewebsites.net/nba/journeybuilder/stop",
+            "verb" : "POST",
+            "body" : "",
+            "useJwt" : true
+        }
+    },
+    "userInterfaces":
+    {
+        "configModal": {
+            "height": 700,
+            "width": 1000,
+            "fullscreen": false
+        }
+    }
+}
