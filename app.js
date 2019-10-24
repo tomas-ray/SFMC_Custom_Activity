@@ -2,7 +2,7 @@
 // Module Dependencies
 // -------------------
 var express     = require('express');
-//var bodyParser  = require('body-parser');
+var bodyParser  = require('body-parser');
 var errorhandler = require('errorhandler');
 var http        = require('http');
 var path        = require('path');
@@ -46,10 +46,10 @@ console.log('IN APP.JS - >');
 
 // Configure Express
 app.set('port', process.env.PORT || 3000);
-//app.use(bodyParser.raw({type: 'application/jwt'}));
+app.use(bodyParser.raw({type: 'application/jwt'}));
 app.use(express.static(path.join(__dirname, 'nba')));
-//app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Express in Development Mode
 if ('development' == app.get('env')) {
