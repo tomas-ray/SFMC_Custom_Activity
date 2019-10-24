@@ -12,9 +12,8 @@ var app = express();
 exports.init = function(req, res) {
 	var date = new Date();
 	var timestamp = date.getTime();
-	var myJson = json.stringify(res);
+	console.log('RES - > ' + res);
 	console.log('INIT - >' + timestamp);
-	console.log('RES - > ' + myJson);
 	res.sendFile(path.resolve(__dirname,'../nba/index.html'));
 };
 
