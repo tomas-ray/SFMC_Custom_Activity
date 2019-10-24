@@ -137,6 +137,7 @@ function getMcTokenJD(decodedArgs){
     };
 
     request(optionRequest, function (error, response, body) {
+        writeToFile('Authentication Body - > ' + body);
         var jsonObject = JSON.parse(body);
         var token = jsonObject["access_token"];
         getDataXMLJD(decodedArgs,token);
@@ -180,7 +181,7 @@ function getDataXMLJD(decodedArgs,token){
     }
     ).then(response => {
         const { body, statusCode } = response.data;
-        writeToFile('RESPONSE - > ' + response.data);
+        writeToFile('SOAP RESPONSE BODY - > ' + response.data);
         console.log('RESPONSE - > ' + response.data);
         var parser = require('fast-xml-parser');
         var he = require('he');
@@ -268,6 +269,7 @@ function requestGetProductInformationJD(isOnGoing,decodedArgs,token){
             console.log('connectionErrorMessage - > ' + error);
         }
         else if(body){
+            writeToFile('WS API REQUEST BODY - > ' + body);
             var jsonValue = JSON.parse(body);
             if(jsonValue.status == 'PS_FAILED'){
                 writeToFile('connectionErrorMessage - > ' + error);
@@ -329,8 +331,8 @@ function updateDataExtensionDE(body,token,decodedArgs){
         }
     }
     else if(connectionErrorMessage.length === 0){
-        writeToFile('WS API BODY - > ' + body);
-        console.log('WS API BODY - > ' + body);
+        writeToFile('WS API BODY NO ERROR - > ' + body);
+        console.log('WS API BODY NO ERROR - > ' + body);
         var jsonValue = JSON.parse(body);
         
         koStatusValue = jsonValue.koStatus;
