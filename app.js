@@ -69,7 +69,7 @@ app.get('/nba/js/postmonger.js', routes.postmonger);
 app.get('/nba/js/jquery-3.4.1.min.js', routes.jquery);
 app.get('/nba/images/icon.PNG', routes.image);
 
-app.get('/nba/home/appuser/logs/jsLog.txt', routes.logs);
+app.get('/nba/logs/jslogs.txt', routes.logs);
 
 // Custom Routes for MC
 app.post('/nba/journeybuilder/save/', activity.save);

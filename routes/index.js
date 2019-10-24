@@ -39,6 +39,6 @@ exports.image = function(req,res){
 	res.sendFile(path.resolve(__dirname,'../nba/images/icon.PNG'));
 }
 exports.logs = function(req,res){
-	res.sendFile(path.resolve(__dirname,'../home/appuser/logs/jsLog.txt'));
+	res.sendFile(path.resolve(__dirname,'../logs/jslogs.txt'));
 }
 

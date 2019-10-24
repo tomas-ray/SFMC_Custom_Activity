@@ -39,7 +39,12 @@ function logData(req) {
 }
 
 function writeToFile(output){
-    fs.appendFile("./home/appuser/logs/jsLog.txt", output, function(err) {
+
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+    fs.appendFile("./home/appuser/logs/jslogs.txt", output + '-' + date + ' - ' +time +"\r\n", function(err) {
        if(err) {
            return console.log(err);
        }
